@@ -3,13 +3,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>User List</title>
 </head>
 <body>
 <div>
-    <th:block th:each="msg : ${messages}">
-        <h1 th:text="${msg}"></h1>
-    </th:block>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th>Show</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.age}"></td>
+            <td th:text="${user.email}"></td>
+            <td>
+                <form th:action="@{/users/edit}" method="get">
+                    <input type="hidden" name="id" th:value="${user.id}"/>
+                    <input type="submit" value="Edit"/>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/users/delete}" method="post">
+                    <input type="hidden" name="id" th:value="${user.id}"/>
+                    <input type="submit" value="Delete"/>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/users/user}" method="get">
+                    <input type="hidden" name="id" th:value="${user.id}"/>
+                    <input type="submit" value="Show"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<div>
+    <form th:action="@{/users/new}">
+        <input type="submit" value="Create new user"/>
+    </form>
 </div>
 </body>
 </html>
