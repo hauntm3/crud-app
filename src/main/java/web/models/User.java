@@ -1,6 +1,11 @@
 package web.models;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -10,12 +15,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotEmpty(message = "Name is required")
+    @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
     @Column(name = "name")
     private String name;
 
     @Column(name = "age")
     private Integer age;
 
+    @NotEmpty(message = "Email is required")
+    @Email(message = "Email is invalid")
     @Column(name = "email")
     private String email;
 
