@@ -3,10 +3,12 @@ package web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import web.dao.UserDao;
 import web.models.User;
 import web.service.UserService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/users")
@@ -42,7 +44,10 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public String createUser(@ModelAttribute("user") User user) {
+    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "new";
+        }
         userService.saveUser(user);
 
         return "redirect:/users";
@@ -63,7 +68,10 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String updateUser(@ModelAttribute("user") User user, @RequestParam("id") int id) {
+    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @RequestParam("id") int id) {
+        if (bindingResult.hasErrors()) {
+            return "edit";
+        }
         userService.update(id, user);
 
         return "redirect:/users";
